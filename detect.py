@@ -44,9 +44,7 @@ class NudityCheck(Resource):
             # Check for nudity
             score = detect(temp_file_path, mode=mode, min_prob=threshold)
 
-            print(score)
-
-            return {"status": 1, "message": "Image processed successfully", "data": score}, 200
+            return {"status": 1, "message": "Image processed successfully", "data": {"has_nudity": True if score else False, "score":score}}, 200
 
         except Exception as e:
             print(str(e))
