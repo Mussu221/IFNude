@@ -14,7 +14,7 @@ class NudityCheck(Resource):
         try:
             # Check if file is present in the request
             if 'file' not in request.files:
-                return {"status":0, "message":"File is required"}, 400
+                return {"status": 0, "message": "File is required"}, 400
 
             file = request.files.get('file')
             mode = request.form.get("mode", "default")
@@ -22,19 +22,19 @@ class NudityCheck(Resource):
 
             # Validate mode
             if mode not in ["default", "fast"]:
-                return {"status":0, "message":"Mode should be one of ['default', 'fast']"}, 400
+                return {"status": 0, "message": "Mode should be one of ['default', 'fast']"}, 400
 
             # Validate threshold
             try:
                 threshold = float(threshold)
                 if not (0.1 <= threshold <= 1.0):
-                    return {"status":0, "message":"Threshold should be between 0.1 to 1.0"}, 400
+                    return {"status": 0, "message": "Threshold should be between 0.1 to 1.0"}, 400
             except ValueError:
-                return {"status":0, "message":"Threshold should be a valid integer between 0.1 to 1.0"}, 400
+                return {"status": 0, "message": "Threshold should be a valid integer between 0.1 to 1.0"}, 400
 
             # Validate file
             if file.filename == '':
-                return {"status":0, "message":"No file selected for uploading"}, 400
+                return {"status": 0, "message": "No file selected for uploading"}, 400
 
             # Create a temporary file
             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -46,16 +46,17 @@ class NudityCheck(Resource):
 
             print(score)
 
-            return {"status":1, "message":"Image processed successfully", "data":score}, 200
+            return {"status": 1, "message": "Image processed successfully", "data": score}, 200
 
         except Exception as e:
             print(str(e))
-            return {"status":0, "message":"An error occurred during processing. Please try again later."}, 500
+            return {"status": 0, "message": "An error occurred during processing. Please try again later."}, 500
 
         finally:
             # Clean up the temporary file
             if temp_file_path and os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
+
 
 # Add the NudityCheck resource to the API
 api.add_resource(NudityCheck, '/check_nudity')
