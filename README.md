@@ -17,7 +17,6 @@ Output
 replace the below function from the installed package from the given path: env\Lib\site-packages\ifnude\detector.py 
 
 
-
 import os
 import cv2
 import numpy as np

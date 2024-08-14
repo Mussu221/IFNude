@@ -1,12 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_restful import Api, Resource
 import tempfile
+from flask_cors import CORS
 from ifnude import detect
 import os
 
 app = Flask(__name__)
 api = Api(app)
-
+cors = CORS(app)
 
 class NudityCheck(Resource):
     def post(self):
@@ -54,6 +55,13 @@ class NudityCheck(Resource):
             # Clean up the temporary file
             if temp_file_path and os.path.exists(temp_file_path):
                 os.remove(temp_file_path)
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("detect.html")
+
+# Add the route to the API
 
 
 # Add the NudityCheck resource to the API
